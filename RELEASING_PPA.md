@@ -15,4 +15,4 @@ tar --exclude-vcs --exclude='./debian' -czf ../pr-ship_<VERSION>.orig.tar.gz .
 debuild -S -sa
 
 # 3) Upload
-dput ppa:gabsrodrigues-dev/pr-ship ../pr-ship_<VERSION>-1~ppa2~ubuntu24.04.1_source.changes
+dput ppa:gabsdk/pr-ship ../pr-ship_<VERSION>-1~ppa2~ubuntu24.04.1_source.changes

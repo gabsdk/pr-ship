@@ -25,8 +25,8 @@ Section: devel
 Priority: optional
 Architecture: all
 Depends: bash (>= 4.0), gh
-Maintainer: Gabriel Rodrigues <gabsrodrigues-dev@users.noreply.github.com>
-Homepage: https://github.com/gabsrodrigues-dev/pr-ship
+Maintainer: Gabriel Rodrigues <gabsdk@users.noreply.github.com>
+Homepage: https://github.com/gabsdk/pr-ship
 Description: Create and merge GitHub PRs from the terminal
  pr-ship is a CLI tool that creates a Pull Request on GitHub
  and immediately merges it, all from your terminal.

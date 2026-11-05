@@ -7,7 +7,7 @@ Create and merge GitHub Pull Requests from the terminal in one command.
 ### Option 1: Via PPA (apt-get)
 
 ```bash
-sudo add-apt-repository ppa:gabsrodrigues-dev/pr-ship
+sudo add-apt-repository ppa:gabsdk/pr-ship
 sudo apt-get update
 sudo apt-get install pr-ship
 ```
@@ -15,7 +15,7 @@ sudo apt-get install pr-ship
 ### Option 2: Quick install (from source)
 
 ```bash
-git clone https://github.com/gabsrodrigues-dev/pr-ship.git
+git clone https://github.com/gabsdk/pr-ship.git
 cd pr-ship
 sudo bash install.sh
 ```
@@ -23,7 +23,7 @@ sudo bash install.sh
 ### Option 3: Debian package (.deb)
 
 ```bash
-git clone https://github.com/gabsrodrigues-dev/pr-ship.git
+git clone https://github.com/gabsdk/pr-ship.git
 cd pr-ship
 bash build-deb.sh
 sudo dpkg -i build/pr-ship_1.0.3.deb
@@ -51,7 +51,7 @@ pr-ship --setup
 This will ask you:
 
 1. **Language** — auto-detects your system language (falls back to English)
-2. **Default GitHub owner** — your username or org (e.g. `gabsrodrigues-dev`)
+2. **Default GitHub owner** — your username or org (e.g. `gabsdk`)
 3. **Default head branch** — source branch (default: `development`)
 4. **Default base branch** — target branch (default: `sandbox`)
 5. **Default PR title** — optional custom title
@@ -75,7 +75,7 @@ pr-ship my-repo
 pr-ship my-repo feature/login main
 
 # Full owner/repo
-pr-ship gabsrodrigues-dev/my-repo development sandbox
+pr-ship gabsdk/my-repo development sandbox
 
 # Custom title and body
 pr-ship my-repo --title "Release v2.0" --body "Production release"

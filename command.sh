@@ -10,7 +10,7 @@ pr-ship() {
 
   # Se não tiver "/", adiciona o owner padrão
   if [[ "$input_repo" != */* ]]; then
-    repo="gabsrodrigues-dev/$input_repo"
+    repo="gabsdk/$input_repo"
   else
     repo="$input_repo"
   fi

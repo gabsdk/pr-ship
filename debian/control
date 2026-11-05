@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Gabriel Rodrigues <gabrielrod.ifmg@gmail.com>
 Build-Depends: debhelper (>= 13)
 Standards-Version: 4.6.0
-Homepage: https://github.com/gabsrodrigues-dev/pr-ship
-Vcs-Git: https://github.com/gabsrodrigues-dev/pr-ship.git
-Vcs-Browser: https://github.com/gabsrodrigues-dev/pr-ship
+Homepage: https://github.com/gabsdk/pr-ship
+Vcs-Git: https://github.com/gabsdk/pr-ship.git
+Vcs-Browser: https://github.com/gabsdk/pr-ship
 
 Package: pr-ship
 Architecture: all
