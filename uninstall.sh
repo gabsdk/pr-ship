@@ -2,18 +2,14 @@
 
 set -euo pipefail
 
-INSTALL_PREFIX="/usr"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/lib/pr-ship/install-paths.sh"
+
+INSTALL_PREFIX="${PREFIX:-$(prship_default_prefix)}"
 SHARE_DIR="${INSTALL_PREFIX}/share/pr-ship"
-TARGET_USER="${SUDO_USER:-${USER:-}}"
-TARGET_HOME="${HOME}"
-
-if [[ -n "$TARGET_USER" ]] && command -v getent &>/dev/null; then
-  TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
-fi
-
+TARGET_HOME="$(prship_target_home)"
 USER_CONFIG_DIR="${TARGET_HOME}/.config/pr-ship"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 UI_FILE="${SCRIPT_DIR}/lib/pr-ship/ui.sh"
 
 if [[ -f "$UI_FILE" ]]; then
@@ -37,7 +33,7 @@ ui_init_colors
 
 purge_config=false
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-  echo "Usage: sudo bash uninstall.sh [--purge]"
+  echo "Usage: [PREFIX=/absolute/path] bash uninstall.sh [--purge]"
   exit 0
 fi
 
@@ -45,9 +41,8 @@ if [[ "${1:-}" == "--purge" ]]; then
   purge_config=true
 fi
 
-if [[ $EUID -ne 0 ]]; then
-  ui_err "This uninstaller requires root privileges."
-  ui_info "Run: sudo bash uninstall.sh"
+if [[ "$INSTALL_PREFIX" != /* ]]; then
+  ui_err "PREFIX must be an absolute path."
   exit 1
 fi
 
@@ -94,7 +89,7 @@ if [[ -d "$USER_CONFIG_DIR" ]]; then
   else
     ui_info "User config was kept"
     ui_kv "Config" "${USER_CONFIG_DIR}"
-    ui_info "Tip: run 'sudo bash uninstall.sh --purge' to remove it next time"
+    ui_info "Tip: use --purge to remove the config during uninstall."
   fi
 else
   ui_info "No user config found"

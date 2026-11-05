@@ -5,17 +5,22 @@ set -euo pipefail
 PRSHIP_VERSION="1.0.3"
 PRSHIP_CONFIG_DIR="${HOME}/.config/pr-ship"
 PRSHIP_CONFIG_FILE="${PRSHIP_CONFIG_DIR}/config"
-PRSHIP_LANG_DIR="/usr/share/pr-ship/lang"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [[ ! -d "$PRSHIP_LANG_DIR" ]]; then
-  PRSHIP_LANG_DIR="${SCRIPT_DIR}/../lib/pr-ship/lang"
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [[ -L "$SCRIPT_PATH" ]]; do
+  SCRIPT_DIR="$(cd -P "$(dirname "$SCRIPT_PATH")" && pwd)"
+  SCRIPT_PATH="$(readlink "$SCRIPT_PATH")"
+  if [[ "$SCRIPT_PATH" != /* ]]; then
+    SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_PATH}"
+  fi
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SCRIPT_PATH")" && pwd)"
+PRSHIP_SHARE_DIR="${SCRIPT_DIR}/../share/pr-ship"
+if [[ ! -f "${PRSHIP_SHARE_DIR}/ui.sh" ]]; then
+  PRSHIP_SHARE_DIR="${SCRIPT_DIR}/../lib/pr-ship"
 fi
 
-UI_FILE="/usr/share/pr-ship/ui.sh"
-if [[ ! -f "$UI_FILE" ]]; then
-  UI_FILE="${SCRIPT_DIR}/../lib/pr-ship/ui.sh"
-fi
+PRSHIP_LANG_DIR="${PRSHIP_SHARE_DIR}/lang"
+UI_FILE="${PRSHIP_SHARE_DIR}/ui.sh"
 
 source "$UI_FILE"
 ui_init_colors

@@ -24,7 +24,7 @@ Version: ${VERSION}
 Section: devel
 Priority: optional
 Architecture: all
-Depends: bash (>= 4.0), gh
+Depends: bash (>= 3.2), gh
 Maintainer: Gabriel Rodrigues <gabsdk@users.noreply.github.com>
 Homepage: https://github.com/gabsdk/pr-ship
 Description: Create and merge GitHub PRs from the terminal

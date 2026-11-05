@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/gabsdk/pr-ship
 
 Package: pr-ship
 Architecture: all
-Depends: ${misc:Depends}, bash (>= 4.0), gh
+Depends: ${misc:Depends}, bash (>= 3.2), gh
 Description: Create and merge GitHub PRs from the terminal
  pr-ship is a CLI tool that creates a Pull Request on GitHub
  and immediately merges it, all from your terminal.

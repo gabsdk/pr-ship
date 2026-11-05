@@ -2,27 +2,22 @@
 
 set -euo pipefail
 
-INSTALL_PREFIX="/usr"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/lib/pr-ship/install-paths.sh"
+
+INSTALL_PREFIX="${PREFIX:-$(prship_default_prefix)}"
 BIN_DIR="${INSTALL_PREFIX}/bin"
 SHARE_DIR="${INSTALL_PREFIX}/share/pr-ship"
 LANG_DIR="${SHARE_DIR}/lang"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-TARGET_USER="${SUDO_USER:-${USER:-}}"
-TARGET_HOME="${HOME}"
-if [[ -n "$TARGET_USER" ]] && command -v getent &>/dev/null; then
-  TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
-fi
-
+TARGET_HOME="$(prship_target_home)"
 USER_CONFIG_DIR="${TARGET_HOME}/.config/pr-ship"
 
 UI_FILE="${SCRIPT_DIR}/lib/pr-ship/ui.sh"
 source "$UI_FILE"
 ui_init_colors
 
-if [[ $EUID -ne 0 ]]; then
-  ui_err "This installer requires root privileges."
-  ui_info "Run: sudo bash install.sh"
+if [[ "$INSTALL_PREFIX" != /* ]]; then
+  ui_err "PREFIX must be an absolute path."
   exit 1
 fi
 
@@ -54,8 +49,10 @@ fi
 ui_header "pr-ship install"
 
 ui_info "Installing files..."
-mkdir -p "$BIN_DIR"
-mkdir -p "$LANG_DIR"
+if ! mkdir -p "$BIN_DIR" "$LANG_DIR"; then
+  ui_err "Cannot create installation directories. Set PREFIX to a writable directory or run with sudo."
+  exit 1
+fi
 
 install -m 755 "${SCRIPT_DIR}/bin/pr-ship" "${BIN_DIR}/pr-ship"
 install -m 644 "${SCRIPT_DIR}/lib/pr-ship/ui.sh" "${SHARE_DIR}/ui.sh"
@@ -71,4 +68,8 @@ ui_kv "Binary" "${BIN_DIR}/pr-ship"
 ui_kv "UI helper" "${SHARE_DIR}/ui.sh"
 ui_kv "Languages" "${LANG_DIR}/"
 echo ""
+case ":${PATH}:" in
+  *":${BIN_DIR}:"*) ;;
+  *) ui_info "Add ${BIN_DIR} to your shell's PATH." ;;
+esac
 ui_info "Next: run 'pr-ship --setup'"
